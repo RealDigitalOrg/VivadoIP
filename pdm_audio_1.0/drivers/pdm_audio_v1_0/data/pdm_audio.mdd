@@ -1,0 +1,10 @@
+
+
+OPTION psf_version = 2.1;
+
+BEGIN DRIVER pdm_audio
+	OPTION supported_peripherals = (pdm_audio);
+	OPTION copyfiles = all;
+	OPTION VERSION = 1.0;
+	OPTION NAME = pdm_audio;
+END DRIVER
