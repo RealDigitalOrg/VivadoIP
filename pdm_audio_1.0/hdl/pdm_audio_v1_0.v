@@ -18,7 +18,8 @@ module pdm_audio_v1_0 #
 	input wire pdm_mclk,
 	inout wire pdm_speaker_l,
 	inout wire pdm_speaker_r,
-	inout wire pdm_mic,
+	input wire pdm_mic,
+	output wire pdm_mic_mclk,
 	// User ports ends
 	// Do not modify the ports beyond this line
 
@@ -56,14 +57,24 @@ wire [15:0] pcmSpkLData;
 wire pdmSpkRRst;
 wire pdmSpkREn;
 wire [15:0] pcmSpkRData;
+// Mic PCM Data
+wire pdmMicEn;
+wire pdmMicRst;
+wire [15:0] pcmMicData;
+wire pdmMicSpkLoopbackEn;
 // AXI Registers
 wire [31:0] pdmCtrlReg;
 wire [31:0] pdmModeReg;
+
 wire s_axi_pdmSpkLEn;
 wire s_axi_pdmSpkREn;
+wire s_axi_pdmMicEn;
+wire s_axi_pdmMicSpkLoopback;
 
 assign s_axi_pdmSpkLEn = pdmCtrlReg[0];
 assign s_axi_pdmSpkREn = pdmCtrlReg[1];
+assign s_axi_pdmMicEn = pdmCtrlReg[2];
+assign s_axi_pdmMicSpkLoopback = pdmModeReg[0];
 
 // Instantiation of Axi Bus Interface S_AXI
 pdm_audio_v1_0_S_AXI # ( 
@@ -77,6 +88,9 @@ pdm_audio_v1_0_S_AXI # (
 	.pcmSpkRData(pcmSpkRData),
 	.pcmSpkRDataEn(pdmSpkREn),
 	.pcmSpkRDataRst(pdmSpkRRst),
+	.pcmMicData(pcmMicData),
+	.pcmMicDataEn(pdmMicEn),
+	.pcmMicDataRst(pdmMicRst),
 	.pdmCtrlReg(pdmCtrlReg),
 	.pdmModeReg(pdmModeReg),
 	.S_AXI_ACLK(s_axi_aclk),
@@ -117,6 +131,28 @@ assign pcmClk = pcmClkCounter[5];
 wire pdmSpkL_o;
 wire pdmSpkR_o;
 
+generate
+if (MIC_EN == 1 && (SPEAKER_L_EN == 1 || SPEAKER_R_EN == 1))
+begin: SELF_MIC_SPK_LOOPBACK
+	// Sychronization
+	pdm_reset_sync # (
+		.pcmResetCyclesParam(pcmResetCyclesParam)
+	) pdm_reset_mic_loopback_inst (
+		.s_axi_aclk(s_axi_aclk),
+		.s_axi_aresetn(s_axi_aresetn),
+		.s_axi_pdmEn(s_axi_pdmMicSpkLoopback),
+		.pdm_mclk(pdm_mclk),
+		.pdmRst(),
+		.pdmEn(pdmMicSpkLoopbackEn)
+	);
+end
+else
+begin
+	assign pdmMicSpkLoopbackEn = 1'b0;
+end	
+endgenerate
+
+
 // Generate speaker left channel
 generate
 if (SPEAKER_L_EN == 1) begin: SPEAKER_L_PDM
@@ -132,10 +168,13 @@ if (SPEAKER_L_EN == 1) begin: SPEAKER_L_PDM
 		.pdmEn(pdmSpkLEn)
 	);
 
+	wire [15:0] pcmSpkLData_i;
+	assign pcmSpkLData_i = (pdmMicSpkLoopbackEn) ? pcmMicData : pcmSpkLData;
+
 	pdm_modulator pdm_modulator_spkL_inst (
 		.pdm_mclk(pdm_mclk),
 		.pdmRstn(pdmSpkLEn),
-		.pcmData(pcmSpkLData),
+		.pcmData(pcmSpkLData_i),
 		.pdm_speaker_o(pdmSpkL_o)
 	);
 
@@ -162,11 +201,14 @@ if (SPEAKER_R_EN == 1) begin: SPEAKER_R_PDM
 		.pdmRst(pdmSpkRRst),
 		.pdmEn(pdmSpkREn)
 	);
+	
+	wire [15:0] pcmSpkRData_i;
+	assign pcmSpkRData_i = (pdmMicSpkLoopbackEn) ? pcmMicData : pcmSpkRData;
 
 	pdm_modulator pdm_modulator_spkR_inst (
 		.pdm_mclk(pdm_mclk),
 		.pdmRstn(pdmSpkREn),
-		.pcmData(pcmSpkRData),
+		.pcmData(pcmSpkRData_i),
 		.pdm_speaker_o(pdmSpkR_o)
 	);
 
@@ -177,6 +219,38 @@ else begin
 	assign pdmSpkRRst = 1'b1;
 	assign pdmSpkREn = 1'b0;
 	assign pdm_speaker_r = 1'bZ;
+end
+endgenerate	
+
+generate
+if (MIC_EN == 1) begin: MIC_DPDM
+	// Sychronization
+	pdm_reset_sync # (
+		.pcmResetCyclesParam(pcmResetCyclesParam)
+	) pdm_reset_spkR_inst (
+		.s_axi_aclk(s_axi_aclk),
+		.s_axi_aresetn(s_axi_aresetn),
+		.s_axi_pdmEn(s_axi_pdmMicEn),
+		.pdm_mclk(pdm_mclk),
+		.pdmRst(pdmMicRst),
+		.pdmEn(pdmMicEn)
+	);
+
+	pdm_demodulator pdm_demodulator_mic_inst (
+		.pcmClk(pcmClk),
+		.pdm_mclk(pdm_mclk),
+		.pdmRstn(pdmMicEn),
+		.pcmData(pcmMicData),
+		.pdm_mic(pdm_mic)
+	);
+
+	assign pdm_mic_mclk = pdm_mclk;
+end
+else begin
+	assign pdmMicRst = 1'b1;
+	assign pdmMicEn = 1'b0;
+	assign pcmMicData = 16'h0;
+	assign pdm_mic_mclk = 1'b0;
 end
 endgenerate	
 

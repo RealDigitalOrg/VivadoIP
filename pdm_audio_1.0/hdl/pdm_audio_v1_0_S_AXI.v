@@ -17,12 +17,19 @@
     )
     (
         input wire pcmClk,
+		// Speaker Left Channel
         output wire [15:0] pcmSpkLData,
         input wire pcmSpkLDataEn,
         input wire pcmSpkLDataRst,
+		// Speaker Right Channel
         output wire [15:0] pcmSpkRData,
         input wire pcmSpkRDataEn,
         input wire pcmSpkRDataRst,
+		// Mic
+		input wire [15:0] pcmMicData,
+		input wire pcmMicDataEn,
+		input wire pcmMicDataRst,
+		// Register
         output wire [31:0] pdmCtrlReg,
         output wire [31:0] pdmModeReg,
         // Do not modify the ports beyond this line
@@ -91,12 +98,18 @@
 
 	// Audio Buffer Signals
 	reg [9:0] audioBufAddr;
+	// Speaker Left
 	reg audioBufSpkLWE;
 	reg [15:0] audioBufSpkLDI;
 	wire [15:0] audioBufSpkLDO;
+	// Speaker Right
 	reg audioBufSpkRWE;
 	reg [15:0] audioBufSpkRDI;
 	wire [15:0] audioBufSpkRDO;
+	// Mic - Notice that Mic Buffer is read-only.
+	wire [15:0] audioBufMicDO;
+	wire [15:0] audioBufMicDI;
+	wire [15:0] audioBufMicWE;
 
     // AXI4LITE signals
     reg [C_S_AXI_ADDR_WIDTH-1 : 0]  axi_awaddr;
@@ -544,7 +557,7 @@
               axi_rdata <= (axi_araddr[13:12] == 2'b00) ? reg_data_out : 
                            (axi_araddr[13:12] == 2'b01) ? {16'h0, audioBufSpkLDO} : 
                            (axi_araddr[13:12] == 2'b10) ? {16'h0, audioBufSpkRDO} :
-                           32'h0;     // register read data
+                           audioBufMicDO;     // register read data
             end   
         end
     end    
@@ -603,7 +616,9 @@
 
     generate
     if (SPEAKER_L_EN == 1) begin: SPEAKER_L_BUFFER
-        audio_buffer audio_buffer_spkL_inst (
+        audio_buffer # (
+			.BUFFER_TYPE("tx")
+        ) audio_buffer_spkL_inst (
             .clkA(S_AXI_ACLK),
             .addrA(audioBufAddr),
             .diA(audioBufSpkLDI),
@@ -612,6 +627,7 @@
             .enA(1'b1),
             .rstA(~S_AXI_ARESETN),
             .clkB(pcmClk),
+			.diB(16'h0),
             .doB(pcmSpkLData),
             .enB(pcmSpkLDataEn),
             .rstB(pcmSpkLDataRst)
@@ -625,7 +641,9 @@
 
     generate
     if (SPEAKER_R_EN == 1) begin: SPEAKER_R_BUFFER
-        audio_buffer audio_buffer_spkR_inst (
+        audio_buffer # (
+			.BUFFER_TYPE("tx")
+		) audio_buffer_spkR_inst (
             .clkA(S_AXI_ACLK),
             .addrA(audioBufAddr),
             .diA(audioBufSpkRDI),
@@ -634,6 +652,7 @@
             .enA(1'b1),
             .rstA(~S_AXI_ARESETN),
             .clkB(pcmClk),
+			.diB(16'h0),
             .doB(pcmSpkRData),
             .enB(pcmSpkRDataEn),
             .rstB(pcmSpkRDataRst)
@@ -644,6 +663,30 @@
         assign pcmSpkRData = 16'h0;
     end
     endgenerate
+
+	assign audioBufMicDI = 16'h0;
+	assign audioBufMicWE = 16'h0;
+
+	generate
+	if (MIC_EN == 1) begin: MIC_BUFFER
+		audio_buffer # (
+			.BUFFER_TYPE("rx")
+		) audio_buffer_mic_inst (
+			.clkA(S_AXI_ACLK),
+			.addrA(audioBufAddr),
+			.diA(audioBufMicDI),
+			.doA(audioBufMicDO),
+			.weA(audioBufMicWE),
+			.enA(1'b1),
+			.rstA(~S_AXI_ARESETN),
+			.clkB(pcmClk),
+			.diB(pcmMicData),
+			.doB(),
+			.enB(pcmMicDataEn),
+			.rstB(pcmMicDataRst)
+		);
+	end
+	endgenerate
 
     assign pdmCtrlReg = {29'h0, slv_reg0[2:0]};
     assign pdmModeReg = {31'h0, slv_reg1[0]};

@@ -46,7 +46,9 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module audio_buffer(
+module audio_buffer # (
+	parameter BUFFER_TYPE = "tx"
+)(
     input clkA,
     input [9:0] addrA,
     input [15:0] diA,
@@ -55,6 +57,7 @@ module audio_buffer(
     input weA,
     input rstA,
     input clkB,
+	input [15:0] diB,
     output [15:0] doB,
     input enB,
     input rstB
@@ -64,6 +67,19 @@ module audio_buffer(
     assign bweA = {weA, weA};
    
     reg [9:0] addrB;
+
+	wire [1:0] bweB;
+	
+	generate
+	if(BUFFER_TYPE == "tx")
+	begin
+		assign bweB = 2'b00;
+	end
+	else
+	begin
+		assign bweB = {enB, enB};
+	end
+	endgenerate
  
     BRAM_TDP_MACRO #(
           .BRAM_SIZE("18Kb"), // Target BRAM: "18Kb" or "36Kb" 
@@ -241,7 +257,7 @@ module audio_buffer(
           .CLKA(clkA),     // 1-bit input port-A clock
           .CLKB(clkB),     // 1-bit input port-B clock
           .DIA(diA),       // Input port-A data, width defined by WRITE_WIDTH_A parameter
-          .DIB(16'h0),     // Input port-B data, width defined by WRITE_WIDTH_B parameter
+          .DIB(diB),       // Input port-B data, width defined by WRITE_WIDTH_B parameter
           .ENA(enA),       // 1-bit input port-A enable
           .ENB(enB),       // 1-bit input port-B enable
           .REGCEA(1'b1),   // 1-bit input port-A output register enable
@@ -249,7 +265,7 @@ module audio_buffer(
           .RSTA(rstA),     // 1-bit input port-A reset
           .RSTB(1'b0),     // 1-bit input port-B reset
           .WEA(bweA),       // Input port-A write enable, width defined by Port A depth
-          .WEB(2'b0)       // Input port-B write enable, width defined by Port B depth
+          .WEB(bweB)       // Input port-B write enable, width defined by Port B depth
        );
 
 
@@ -267,6 +283,6 @@ module audio_buffer(
             else
                 addrB <= addrB; 
         end
-    end 
+    end
 
 endmodule
