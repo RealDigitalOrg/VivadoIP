@@ -57,6 +57,26 @@ Register Table
 
 Data in both speaker buffers and microphone buffer are 32-bit aligned, where only lower 16 bits of each 32-bit word are valid.
 
+## Example Project
+
+### Blackboard Rev. A
+
+To generate example project targeting Blackboard Rev. A in Vivado 2017.3, browse to the folder where you want the project to be created and run
+
+```bash
+vivado -mode tcl -source ../VivadoIP/pdm_audio_1.0/example_designs/blackboardRevA/hw/create_project_2017_3.tcl -tclargs --origin_dir ../VivadoIP/pdm_audio_1.0/example_designs/blackboardRevA/hw/
+```
+
+or open Vivado, in tcl command window, browse to the folder you want to create your project and run
+
+```tcl
+source ../VivadoIP/pdm_audio_1.0/example_designs/blackboardRevA/hw/create_project_2017_3.tcl -tclargs --origin_dir ../VivadoIP/pdm_audio_1.0/example_designs/blackboardRevA/hw/
+```
+
+Change the "../VivadoIP" to the location of VivadoIP directory on your system.
+
+After bitstream is generated, export the hardware to SDK. Create an empty application and add "main.c" file.
+
 ## To-do List
 
 - PL330 DMA Support for input/output channels.
