@@ -59,6 +59,7 @@ module audio_buffer # (
     input clkB,
 	input [15:0] diB,
     output [15:0] doB,
+    output [9:0] addrB,
     input enB,
     input rstB
     );
@@ -66,7 +67,7 @@ module audio_buffer # (
 	wire [1:0] bweA;
     assign bweA = {weA, weA};
    
-    reg [9:0] addrB;
+    reg [9:0] addrB_i;
 
 	wire [1:0] bweB;
 	
@@ -253,7 +254,7 @@ module audio_buffer # (
           .DOA(doA),       // Output port-A data, width defined by READ_WIDTH_A parameter
           .DOB(doB),       // Output port-B data, width defined by READ_WIDTH_B parameter
           .ADDRA(addrA),   // Input port-A address, width defined by Port A depth
-          .ADDRB(addrB),   // Input port-B address, width defined by Port B depth
+          .ADDRB(addrB_i),   // Input port-B address, width defined by Port B depth
           .CLKA(clkA),     // 1-bit input port-A clock
           .CLKB(clkB),     // 1-bit input port-B clock
           .DIA(diA),       // Input port-A data, width defined by WRITE_WIDTH_A parameter
@@ -275,14 +276,16 @@ module audio_buffer # (
     always @ (posedge clkB or posedge rstB)
     begin
         if (rstB == 1'b1)
-            addrB <= 10'h0;
+            addrB_i <= 10'h0;
         else
         begin
             if (enB == 1'b1)
-                addrB <= addrB + 1'b1;
+                addrB_i <= addrB_i + 1'b1;
             else
-                addrB <= addrB; 
+                addrB_i <= addrB_i; 
         end
     end
+    
+    assign addrB = addrB_i;
 
 endmodule

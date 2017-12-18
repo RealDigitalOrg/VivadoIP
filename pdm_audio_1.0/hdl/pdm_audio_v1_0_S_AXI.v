@@ -1,5 +1,53 @@
-
 `timescale 1 ns / 1 ps
+//////////////////////////////////////////////////////////////////////////////////
+// Module: pdm_audio_v1_0_S_AXI
+// Author: Tinghui Wang
+//
+// Copyright @ 2017 RealDigital.org
+//
+// Description:
+//   AXI Interface for pdm_audio IP core.
+//   0x0000 Control Register
+//   0x0004 Mic Loopback Mode Enable Register
+//   0x000C Interrupt Enable/State Register
+//   0x1000-0x1FFF 2KB Audio Ping-Pong Buffer (BRAM) for Speaker (Left Channel)
+//   0x2000-0x2FFF 2KB Audio Ping-pong Buffer (BRAM) for Speaker (Right Channel)
+//   0x3000-0x3FFF 2KB Audio Ping-pong Buffer (BRAM) for Microphone
+//   
+//   Sensitivity of interrupts are configured as edge-rising.
+//   Each interrupt pulse are 4-AXI-Clock-period wide.
+//
+// History:
+//   11/12/17: Created
+//
+// License: BSD 3-Clause
+//
+// Redistribution and use in source and binary forms, with or without 
+// modification, are permitted provided that the following conditions are met:
+//
+// 1. Redistributions of source code must retain the above copyright notice, this 
+//    list of conditions and the following disclaimer.
+//
+// 2. Redistributions in binary form must reproduce the above copyright notice, 
+//    this list of conditions and the following disclaimer in the documentation 
+//    and/or other materials provided with the distribution.
+//
+// 3. Neither the name of the copyright holder nor the names of its contributors 
+//    may be used to endorse or promote products derived from this software 
+//    without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+// DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE 
+// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+// SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+// CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+// OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+//////////////////////////////////////////////////////////////////////////////////
 
     module pdm_audio_v1_0_S_AXI #
     (
@@ -32,6 +80,10 @@
 		// Register
         output wire [31:0] pdmCtrlReg,
         output wire [31:0] pdmModeReg,
+		// Interrupts
+		output wire spkLIntr,
+		output wire spkRIntr,
+		output wire micIntr,
         // Do not modify the ports beyond this line
 
         // Global Clock Signal
@@ -102,14 +154,21 @@
 	reg audioBufSpkLWE;
 	reg [15:0] audioBufSpkLDI;
 	wire [15:0] audioBufSpkLDO;
+    wire spkLBufId;
+    wire spkLIntr_i;
 	// Speaker Right
 	reg audioBufSpkRWE;
 	reg [15:0] audioBufSpkRDI;
 	wire [15:0] audioBufSpkRDO;
+    wire spkRBufId;
+    wire spkRIntr_i;
+
 	// Mic - Notice that Mic Buffer is read-only.
 	wire [15:0] audioBufMicDO;
 	wire [15:0] audioBufMicDI;
 	wire [15:0] audioBufMicWE;
+    wire micBufId;
+    wire micIntr_i;
 
     // AXI4LITE signals
     reg [C_S_AXI_ADDR_WIDTH-1 : 0]  axi_awaddr;
@@ -522,7 +581,7 @@
           case ( axi_araddr[ADDR_LSB+OPT_MEM_ADDR_BITS:ADDR_LSB] )
             4'h0   : reg_data_out <= pdmCtrlReg;
             4'h1   : reg_data_out <= pdmModeReg;
-            4'h2   : reg_data_out <= slv_reg2;
+            4'h2   : reg_data_out <= {25'h0, micBufId, spkRBufId, spkLBufId, 1'b0, slv_reg2[2:0]};
             4'h3   : reg_data_out <= slv_reg3;
             4'h4   : reg_data_out <= slv_reg4;
             4'h5   : reg_data_out <= slv_reg5;
@@ -614,8 +673,27 @@
         end
     end
 
+    // ACLK_div4 (slower clock to make sure the pulse width is long enough for GIC to trigger
+    reg axi_aclk_div2 = 1'b0;
+    reg axi_aclk_div4 = 1'b0;
+    
+    always @(posedge S_AXI_ACLK)
+    begin
+        axi_aclk_div2 <= ~axi_aclk_div2;
+    end
+
+    always @(posedge axi_aclk_div2)
+    begin
+        axi_aclk_div4 <= ~axi_aclk_div4;
+    end
+
     generate
     if (SPEAKER_L_EN == 1) begin: SPEAKER_L_BUFFER
+		wire [9:0] pcmSpkLAddr;
+		wire pcmSpkLBufId;
+		reg pcmSpkLBufId_d;
+        reg pcmSpkLIntr;
+
         audio_buffer # (
 			.BUFFER_TYPE("tx")
         ) audio_buffer_spkL_inst (
@@ -629,18 +707,71 @@
             .clkB(pcmClk),
 			.diB(16'h0),
             .doB(pcmSpkLData),
+            .addrB(pcmSpkLAddr),
             .enB(pcmSpkLDataEn),
             .rstB(pcmSpkLDataRst)
         );
+
+		assign pcmSpkLBufId = ~pcmSpkLAddr[9];
+
+		always@(posedge pcmClk)
+		begin
+			pcmSpkLBufId_d <= pcmSpkLBufId;
+		end
+
+		always@(posedge pcmClk)
+		begin
+			pcmSpkLIntr <= pcmSpkLBufId_d ^ pcmSpkLBufId;
+		end
+
+		wire spkLIntr_i;
+
+		// Clock Domain Crossing Pulse Transfer
+		xpm_cdc_pulse # (
+            .DEST_SYNC_FF(4),
+			.INIT_SYNC_FF(1),
+			.REG_OUTPUT(0),
+			.RST_USED(1),
+			.SIM_ASSERT_CHK(1)
+        ) spkLIntrSync_inst (
+			.src_clk(pcmClk),
+			.src_rst(pcmSpkLDataRst),
+			.src_pulse(pcmSpkLIntr),
+			.dest_clk(axi_aclk_div4),
+			.dest_rst(~S_AXI_ARESETN),
+			.dest_pulse(spkLIntr_i)
+		);
+
+		// Clocl Domain Crossing Single Bit Synchronizer
+		xpm_cdc_single # (
+			.DEST_SYNC_FF(4),
+			.INIT_SYNC_FF(1),
+			.SRC_INPUT_REG(0),
+			.SIM_ASSERT_CHK(1)
+		) spkLBufIDSync_inst (
+			.src_clk(pcmClk),
+			.src_in(pcmSpkLBufId),
+			.dest_clk(S_AXI_ACLK),
+			.dest_out(spkLBufId)
+		);
+
+		assign spkLIntr = spkLIntr_i & slv_reg2[0]; 
     end
     else
     begin
+        assign spkLBufId = 1'b0;
+		assign spkLIntr = 1'b0;
         assign pcmSpkLData = 16'h0;
     end
     endgenerate
 
     generate
     if (SPEAKER_R_EN == 1) begin: SPEAKER_R_BUFFER
+		wire [9:0] pcmSpkRAddr;
+		wire pcmSpkRBufId;
+		reg pcmSpkRBufId_d;
+        reg pcmSpkRIntr;
+
         audio_buffer # (
 			.BUFFER_TYPE("tx")
 		) audio_buffer_spkR_inst (
@@ -654,13 +785,61 @@
             .clkB(pcmClk),
 			.diB(16'h0),
             .doB(pcmSpkRData),
+            .addrB(pcmSpkRAddr),
             .enB(pcmSpkRDataEn),
             .rstB(pcmSpkRDataRst)
         );
+		
+		assign pcmSpkRBufId = ~pcmSpkRAddr[9];
+
+		always@(posedge pcmClk)
+		begin
+			pcmSpkRBufId_d <= pcmSpkRBufId;
+		end
+
+		always@(posedge pcmClk)
+		begin
+			pcmSpkRIntr <= pcmSpkRBufId_d ^ pcmSpkRBufId;
+		end
+
+		wire spkRIntr_i;
+
+		// Clock Domain Crossing Pulse Transfer
+		xpm_cdc_pulse # (
+            .DEST_SYNC_FF(4),
+			.INIT_SYNC_FF(1),
+			.REG_OUTPUT(0),
+			.RST_USED(1),
+			.SIM_ASSERT_CHK(1)
+        ) spkRIntrSync_inst (
+			.src_clk(pcmClk),
+			.src_rst(pcmSpkRDataRst),
+			.src_pulse(pcmSpkRIntr),
+			.dest_clk(axi_aclk_div4),
+			.dest_rst(~S_AXI_ARESETN),
+			.dest_pulse(spkRIntr_i)
+		);
+
+		// Clocl Domain Crossing Single Bit Synchronizer
+		xpm_cdc_single # (
+			.DEST_SYNC_FF(4),
+			.INIT_SYNC_FF(1),
+			.SRC_INPUT_REG(0),
+			.SIM_ASSERT_CHK(1)
+		) spkRBufIDSync_inst (
+			.src_clk(pcmClk),
+			.src_in(pcmSpkRBufId),
+			.dest_clk(S_AXI_ACLK),
+			.dest_out(spkRBufId)
+		);
+
+		assign spkRIntr = spkRIntr_i & slv_reg2[1];
     end
     else
     begin
         assign pcmSpkRData = 16'h0;
+        assign spkRBufId = 1'b0;
+		assign spkRIntr = 1'b0;
     end
     endgenerate
 
@@ -669,6 +848,11 @@
 
 	generate
 	if (MIC_EN == 1) begin: MIC_BUFFER
+		wire [9:0] pcmMicAddr;
+		wire pcmMicBufId;
+		reg pcmMicBufId_d;
+        reg pcmMicIntr;
+
 		audio_buffer # (
 			.BUFFER_TYPE("rx")
 		) audio_buffer_mic_inst (
@@ -682,9 +866,60 @@
 			.clkB(pcmClk),
 			.diB(pcmMicData),
 			.doB(),
+            .addrB(pcmMicAddr),
 			.enB(pcmMicDataEn),
 			.rstB(pcmMicDataRst)
 		);
+
+		assign pcmMicBufId = ~pcmMicAddr[9];
+
+		always@(posedge pcmClk)
+		begin
+			pcmMicBufId_d <= pcmMicBufId;
+		end
+
+		always@(posedge pcmClk)
+		begin
+			pcmMicIntr <= pcmMicBufId_d ^ pcmMicBufId;
+		end
+
+		wire micIntr_i;
+
+		// Clock Domain Crossing Pulse Transfer
+		xpm_cdc_pulse # (
+            .DEST_SYNC_FF(4),
+			.INIT_SYNC_FF(1),
+			.REG_OUTPUT(0),
+			.RST_USED(1),
+			.SIM_ASSERT_CHK(1)
+        ) micIntrSync_inst (
+			.src_clk(pcmClk),
+			.src_rst(pcmMicDataRst),
+			.src_pulse(pcmMicIntr),
+			.dest_clk(axi_aclk_div4),
+			.dest_rst(~S_AXI_ARESETN),
+			.dest_pulse(micIntr_i)
+		);
+
+		// Clocl Domain Crossing Single Bit Synchronizer
+		xpm_cdc_single # (
+			.DEST_SYNC_FF(4),
+			.INIT_SYNC_FF(1),
+			.SRC_INPUT_REG(0),
+			.SIM_ASSERT_CHK(1)
+		) micBufIDSync_inst (
+			.src_clk(pcmClk),
+			.src_in(pcmMicBufId),
+			.dest_clk(S_AXI_ACLK),
+			.dest_out(micBufId)
+		);
+
+		assign micIntr = micIntr_i & slv_reg2[2];
+    end
+	else
+	begin
+        assign micBufId = 1'b0;
+		assign micIntr = 1'b0;
 	end
 	endgenerate
 
