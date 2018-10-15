@@ -45,11 +45,6 @@ module hdmi_tx_tb();
 reg clk = 1'b0;
 reg rst = 1'b0;
 reg [7:0] sw = 8'h00;
-wire vga_hsync;
-wire vga_vsync;
-wire [3:0] vga_red;
-wire [3:0] vga_green;
-wire [3:0] vga_blue;
 wire tmds_clk_p;
 wire tmds_clk_n;
 wire [2:0] tmds_data_p;
@@ -59,11 +54,6 @@ wrapper uut(
     .clk(clk),
     .rst(rst),
     .sw(sw),
-    .vga_hsync(vga_hsync),
-    .vga_vsync(vga_vsync),
-    .vga_red(vga_red),
-    .vga_green(vga_green),
-    .vga_blue(vga_blue),
     .hdmi_tx_hpd(),
     .TMDS_CLK_P(tmds_clk_p),
     .TMDS_CLK_N(tmds_clk_n),
