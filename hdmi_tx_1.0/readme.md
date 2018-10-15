@@ -24,20 +24,16 @@ If you see this, configure the core in DVI mode (so that video guardband and pre
 
 ## Example Project
 
-### Blackboard Rev. A
+### Blackboard Rev. D
 
-To generate example project targeting Blackboard Rev. A in Vivado 2017.3, browse to the folder where you want the project to be created and run
+To generate example project targeting Blackboard Rev. D in Vivado 2018.2, browse to the `example_design` folder and run `make`.
 
-```bash
-vivado -mode tcl -source ../VivadoIP/hdmi_tx_1.0/example_designs/blackboardRevA/hw/create_project_2017_3.tcl -tclargs --origin_dir ../VivadoIP/hdmi_tx_1.0/example_designs/blackboardRevA/hw/
-```
-
-or open Vivado, in tcl command window, browse to the folder you want to create your project and run
+If you want to create the example project at a different location, open Vivado, in the tcl command window, browse to the folder you want to create yourproject and run
 
 ```tcl
-source ../VivadoIP/hdmi_tx_1.0/example_designs/blackboardRevA/hw/create_project_2017_3.tcl -tclargs --origin_dir ../VivadoIP/hdmi_tx_1.0/example_designs/blackboardRevA/hw/
+source ../VivadoIP/hdmi_tx_1.0/example_designs/tcl/project.tcl
 ```
 
-Change the "../VivadoIP" to the location of VivadoIP directory on your system.
+Change the `../VivadoIP` to the location of VivadoIP directory on your system.
 
 [XAPP460: Video Connectivity Using TMDS I/O in Spartan-3A FPGAs]:https://www.xilinx.com/support/documentation/application_notes/xapp460.pdf
