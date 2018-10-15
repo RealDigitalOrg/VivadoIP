@@ -45,12 +45,6 @@ module wrapper(
     input clk,
     input rst,
     input [7:0] sw,
-    // VGA output ports
-    output vga_hsync,
-    output vga_vsync,
-    output [3:0] vga_red,
-    output [3:0] vga_green,
-    output [3:0] vga_blue,
     // hdmi output ports
     output  hdmi_tx_hpd,
     output TMDS_CLK_P,
@@ -155,17 +149,7 @@ module wrapper(
     
     assign red = (vde == 1'b1) ? {sw[7:5], 5'h1F} : 8'h00;
     assign green = (vde == 1'b1) ? {sw[4:2], 5'h1F} : 8'h00;
-    assign blue = (vde == 1'b1) ? {sw[1:0], 6'h3F} : 8'h00;
-    
-    srldelay # (
-        .WIDTH(14),
-        .TAPS(4'd1)
-    ) vga_srldelay (
-        .data_i({red[7:4], green[7:4], blue[7:4], hsync, vsync}),
-        .data_o({vga_red, vga_green, vga_blue, vga_hsync, vga_vsync}),
-        .clk(pix_clk)
-    );
-    
+    assign blue = (vde == 1'b1) ? {sw[1:0], 6'h3F} : 8'h00;    
     assign hdmi_tx_hpd = 1'b1;
     
 endmodule
