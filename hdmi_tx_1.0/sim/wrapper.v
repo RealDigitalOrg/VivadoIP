@@ -59,10 +59,10 @@ module wrapper(
     output  [2:0] TMDS_DATA_N
 );
     
-    wire pix_clk;
-    wire pix_clkx5;
+    reg  pix_clk = 0;
+    reg  pix_clkx5 = 0;
     
-    wire locked;
+    reg  locked;
     wire pix_rst;
         
     wire hsync;
@@ -71,22 +71,28 @@ module wrapper(
     wire [7:0] red;
     wire [7:0] green;
     wire [7:0] blue;
-    
-    clk_wiz_0 clk_wiz_inst
-    (
-    // Clock out ports  
-    .clk(pix_clk),
-    .clk_x5(pix_clkx5),
-    // Status and control signals               
-    .reset(rst), 
-    .locked(locked),
-   // Clock in ports
-    .clk_in(clk)
-    );
+    wire [23:0] data;
+   
+    // Simulate Clock Wizard 
+    always @ *
+        #6.735 pix_clk <= ~pix_clk;
+
+    always @ *
+        #1.347 pix_clkx5 <= ~pix_clkx5;
+    initial
+    begin
+      locked = 0;
+      #7000
+      locked = 1;
+    end
     
     assign pix_rst = rst | ~locked;
-    
+    assign data[23:16] = red;
+    assign data[15:8] = green;
+    assign data[7:0] = blue;
+        
     hdmi_tx_v1_0 # (
+        .C_DATA_WIDTH(24),
         .C_RED_WIDTH(8),
         .C_GREEN_WIDTH(8),
         .C_BLUE_WIDTH(8),
@@ -96,9 +102,7 @@ module wrapper(
         .pix_clkx5(pix_clkx5),
         .pix_clk_locked(locked),
         .rst(rst),
-        .red(red),
-        .green(green),
-        .blue(blue),
+        .pix_data(data),
         .hsync(hsync),
         .vsync(vsync),
         .vde(vde),
