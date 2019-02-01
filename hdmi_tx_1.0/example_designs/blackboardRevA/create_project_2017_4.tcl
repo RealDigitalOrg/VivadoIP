@@ -1,5 +1,5 @@
 #*****************************************************************************************
-# Vivado (TM) v2017.3 (64-bit)
+# Vivado (TM) v2017.4 (64-bit)
 #
 # create_project.tcl: Tcl script for re-creating project 'hdmi_test'
 #
@@ -32,7 +32,7 @@
 #    "hdmi_tx_1.0/hdl/hdmi_tx_v1_0.v"
 #    "hdmi_tx_1.0/hdl/serdes_10_to_1.v"
 #    "hdmi_tx_1.0/hdl/srldelay.v"
-#    "hdmi_tx_1.0/sim/wrapper.v"
+#    "hdmi_tx_1.0/sim/wrapper-syn.v"
 #    "hdmi_tx_1.0/example_designs/blackboardRevA/blackboard_video.xdc"
 #    "hdmi_tx_1.0/sim/hdmi_tx_tb.v"
 #
@@ -134,7 +134,7 @@ set files [list \
  "[file normalize "$origin_dir/../../hdl/hdmi_tx_v1_0.v"]"\
  "[file normalize "$origin_dir/../../hdl/serdes_10_to_1.v"]"\
  "[file normalize "$origin_dir/../../hdl/srldelay.v"]"\
- "[file normalize "$origin_dir/../../sim/wrapper.v"]"\
+ "[file normalize "$origin_dir/../../sim/wrapper-syn.v"]"\
 ]
 add_files -norecurse -fileset $obj $files
 
