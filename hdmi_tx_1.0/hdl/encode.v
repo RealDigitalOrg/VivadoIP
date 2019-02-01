@@ -78,7 +78,7 @@
 
 module encode # (
   parameter CHANNEL="BLUE",
-  parameter MODE="HDMI"
+  parameter MODE="DVI"
 )(
   input  wire       clkin,    // pixel clock input
   input  wire       rstin,    // async. reset input (active high)
