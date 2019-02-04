@@ -621,7 +621,6 @@
       <xilinx:upgrades>
         <xilinx:canUpgradeFrom>user.org:user:hdmi_tx_v1_0:1.0</xilinx:canUpgradeFrom>
         <xilinx:canUpgradeFrom>realdigital.org:realdigital:hdmi_tx:1.0</xilinx:canUpgradeFrom>
-        <xilinx:canUpgradeFrom>realdigital.org:realdigital:hdmi_tx:1.10</xilinx:canUpgradeFrom>
       </xilinx:upgrades>
       <xilinx:coreCreationDateTime>2019-02-01T17:06:50Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
