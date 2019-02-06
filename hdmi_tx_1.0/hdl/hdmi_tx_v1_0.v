@@ -14,6 +14,7 @@
 //   11/12/17: Created
 //   02/01/19: Update to utilize vid_io bus interface in Vivado.
 //   02/05/19: Update to synchronize rst_i signal to pix_clk.
+//   02/06/19: Added asynchronous reset to rst_i signal.
 //
 // License: BSD 3-Clause
 //
