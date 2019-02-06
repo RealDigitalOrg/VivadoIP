@@ -25,7 +25,7 @@ If you see this, configure the core in DVI mode (so that video guardband and pre
 
 The RGB input should be connected to the output of the "AXI4-Stream to Video Out" block for the typical DMA-based design used with Linux.
 
-## Example Project
+## Example Projects
 
 ### Blackboard Rev. A
 
@@ -39,6 +39,20 @@ or open Vivado, in tcl command window, browse to the folder you want to create y
 
 ```tcl
 source ../VivadoIP/hdmi_tx_1.0/example_designs/blackboardRevA/create_project_2017_4.tcl -tclargs --origin_dir ../VivadoIP/hdmi_tx_1.0/example_designs/blackboardRevA/
+```
+
+### Blackboard Rev. D
+
+To generate example project targeting Blackboard Rev. D in Vivado 2017.4, browse to the folder where you want the project to be created and run
+
+```bash
+vivado -mode tcl -source ../VivadoIP/hdmi_tx_1.0/example_designs/blackboardRevD/create_project_2017_4.tcl -tclargs --origin_dir ../VivadoIP/hdmi_tx_1.0/example_designs/blackboardRevD/
+```
+
+or open Vivado, in tcl command window, browse to the folder you want to create your project and run
+
+```tcl
+source ../VivadoIP/hdmi_tx_1.0/example_designs/blackboardRevD/create_project_2017_4.tcl -tclargs --origin_dir ../VivadoIP/hdmi_tx_1.0/example_designs/blackboardRevD/
 ```
 
 Change the "../VivadoIP" to the location of VivadoIP directory on your system.
