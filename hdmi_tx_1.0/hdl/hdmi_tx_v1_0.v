@@ -2,7 +2,7 @@
 // Module: hdmi_tx_v1_0
 // Author: Tinghui Wang
 //
-// Copyright @ 2017 RealDigital.org
+// Copyright @ 2017-2019 RealDigital.org
 //
 // Description:
 //   HDMI/DVI encoder module for Xilinx 7-series FPGA.
@@ -12,6 +12,8 @@
 //
 // History:
 //   11/12/17: Created
+//   02/01/19: Update to utilize vid_io bus interface in Vivado.
+//   02/05/19: Update to synchronize rst_i signal to pix_clk.
 //
 // License: BSD 3-Clause
 //
@@ -97,8 +99,16 @@ module hdmi_tx_v1_0 # (
 );
 
 // Reset
-wire rst_i;
-assign rst_i = rst | ~pix_clk_locked;
+wire rst_i, rst_in;
+reg rst_q1, rst_q2;
+assign rst_in = rst | ~pix_clk_locked;
+assign rst_i = rst_q1 & rst_q2;
+
+// Generate synchronous reset signal
+always @ (posedge pix_clk) begin
+  rst_q1 <=#1 rst_in;
+  rst_q2 <=#1 rst_q1;
+end
 
 // Padding/Truncating RGB to 24-bit color depth
 wire    [7:0]   blue_din;         // Blue data in
