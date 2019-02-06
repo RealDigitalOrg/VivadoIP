@@ -2,7 +2,7 @@
 // Module: encode
 // Author: Tinghui Wang
 //
-// Copyright @ 2017 RealDigital.org
+// Copyright @ 2017-2019 RealDigital.org
 //
 // Description:
 //   8b/10b TMDS encoder.
@@ -21,6 +21,7 @@
 //
 // History:
 //   11/12/17: Created
+//   02/01/19: Set default MODE to DVI.
 //
 // License: BSD 3-Clause
 //
