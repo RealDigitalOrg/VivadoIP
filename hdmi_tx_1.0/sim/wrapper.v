@@ -2,13 +2,14 @@
 // Module: wrapper
 // Author: Tinghui Wang
 //
-// Copyright @ 2017 RealDigital.org
+// Copyright @ 2017-2019 RealDigital.org
 //
 // Description:
 //   Solid color screen for HDMI testing at 720p60 resolution.
 //
 // History:
 //   11/12/17: Created
+//   02/01/19: Updated for simulation and to utilize vid_io interface.
 //
 // License: BSD 3-Clause
 //
