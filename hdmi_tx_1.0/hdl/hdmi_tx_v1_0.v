@@ -102,12 +102,17 @@ module hdmi_tx_v1_0 # (
 wire rst_i, rst_in;
 reg rst_q1, rst_q2;
 assign rst_in = rst | ~pix_clk_locked;
-assign rst_i = rst_q1 & rst_q2;
+assign rst_i = rst_q2;
 
 // Generate synchronous reset signal
-always @ (posedge pix_clk) begin
-  rst_q1 <=#1 rst_in;
-  rst_q2 <=#1 rst_q1;
+always @ (posedge pix_clk or posedge rst_in) begin
+  if (rst_in) begin
+    rst_q1 <= 1'b1;
+    rst_q2 <= 1'b1;
+  end else begin
+    rst_q1 <=#1 rst_in;
+    rst_q2 <=#1 rst_q1;
+  end
 end
 
 // Padding/Truncating RGB to 24-bit color depth
