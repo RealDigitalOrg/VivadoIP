@@ -1,0 +1,644 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spirit:component xmlns:xilinx="http://www.xilinx.com" xmlns:spirit="http://www.spiritconsortium.org/XMLSchema/SPIRIT/1685-2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <spirit:vendor>realdigital.org</spirit:vendor>
+  <spirit:library>realdigital</spirit:library>
+  <spirit:name>LSM9DS1_SPI_Bridge</spirit:name>
+  <spirit:version>1.0</spirit:version>
+  <spirit:busInterfaces>
+    <spirit:busInterface>
+      <spirit:name>SPI</spirit:name>
+      <spirit:displayName>SPI</spirit:displayName>
+      <spirit:description>SPI</spirit:description>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="spi" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="spi_rtl" spirit:version="1.0"/>
+      <spirit:mirroredMaster/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>SCK_T</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M_SPI_SCLK_TN</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>IO1_T</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M_SPI_MISO_TN</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>SS_I</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M_SPI_SS_I</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>IO1_O</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M_SPI_MISO_O</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>SS_T</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M_SPI_SS_TN</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>IO0_O</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M_SPI_MOSI_O</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>SCK_I</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M_SPI_SCLK_I</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>SS_O</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M_SPI_SS_O</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>IO0_T</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M_SPI_MOSI_TN</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>SS1_O</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M_SPI_SS1_O</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>SCK_O</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M_SPI_SCLK_O</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>SS2_O</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M_SPI_SS2_O</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>IO1_I</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M_SPI_MISO_I</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>IO0_I</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M_SPI_MOSI_I</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+    </spirit:busInterface>
+  </spirit:busInterfaces>
+  <spirit:model>
+    <spirit:views>
+      <spirit:view>
+        <spirit:name>xilinx_anylanguagesynthesis</spirit:name>
+        <spirit:displayName>Synthesis</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:synthesis</spirit:envIdentifier>
+        <spirit:language>Verilog</spirit:language>
+        <spirit:modelName>spi_bridge</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_anylanguagesynthesis_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>viewChecksum</spirit:name>
+            <spirit:value>3553074e</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_anylanguagebehavioralsimulation</spirit:name>
+        <spirit:displayName>Simulation</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:simulation</spirit:envIdentifier>
+        <spirit:language>Verilog</spirit:language>
+        <spirit:modelName>spi_bridge</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_anylanguagebehavioralsimulation_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>viewChecksum</spirit:name>
+            <spirit:value>3553074e</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_xpgui</spirit:name>
+        <spirit:displayName>UI Layout</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:xgui.ui</spirit:envIdentifier>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_xpgui_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>viewChecksum</spirit:name>
+            <spirit:value>f92e9879</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+    </spirit:views>
+    <spirit:ports>
+      <spirit:port>
+        <spirit:name>M_SPI_SCLK_O</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M_SPI_SCLK_TN</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M_SPI_SCLK_I</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M_SPI_MOSI_O</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M_SPI_MOSI_TN</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M_SPI_MOSI_I</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M_SPI_MISO_I</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M_SPI_MISO_TN</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M_SPI_MISO_O</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M_SPI_SS_TN</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M_SPI_SS_O</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M_SPI_SS1_O</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M_SPI_SS2_O</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M_SPI_SS_I</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>SCK_AGM</spirit:name>
+        <spirit:wire>
+          <spirit:direction>inout</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>MOSI_AGM</spirit:name>
+        <spirit:wire>
+          <spirit:direction>inout</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>MISO_AG</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>MISO_M</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>SS_AG</spirit:name>
+        <spirit:wire>
+          <spirit:direction>inout</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>SS_M</spirit:name>
+        <spirit:wire>
+          <spirit:direction>inout</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+    </spirit:ports>
+  </spirit:model>
+  <spirit:fileSets>
+    <spirit:fileSet>
+      <spirit:name>xilinx_anylanguagesynthesis_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>hdl/spi_bridge.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:userFileType>CHECKSUM_3553074e</spirit:userFileType>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_anylanguagebehavioralsimulation_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>hdl/spi_bridge.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_xpgui_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>xgui/LSM9DS1_SPI_Bridge_v1_0.tcl</spirit:name>
+        <spirit:fileType>tclSource</spirit:fileType>
+        <spirit:userFileType>CHECKSUM_f92e9879</spirit:userFileType>
+        <spirit:userFileType>XGUI_VERSION_2</spirit:userFileType>
+      </spirit:file>
+    </spirit:fileSet>
+  </spirit:fileSets>
+  <spirit:description>SPI Bridge to connect with ST LSM9DS1 9-axis inertial module.</spirit:description>
+  <spirit:parameters>
+    <spirit:parameter>
+      <spirit:name>Component_Name</spirit:name>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.Component_Name" spirit:order="1">slave_select_v1_0</spirit:value>
+    </spirit:parameter>
+  </spirit:parameters>
+  <spirit:vendorExtensions>
+    <xilinx:coreExtensions>
+      <xilinx:supportedFamilies>
+        <xilinx:family xilinx:lifeCycle="Production">artix7</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">artix7l</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">aartix7</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">zynq</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">azynq</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">spartan7</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">aspartan7</xilinx:family>
+      </xilinx:supportedFamilies>
+      <xilinx:taxonomies>
+        <xilinx:taxonomy>/UserIP</xilinx:taxonomy>
+      </xilinx:taxonomies>
+      <xilinx:displayName>LSM9DS1 SPI Bridge</xilinx:displayName>
+      <xilinx:definitionSource>package_project</xilinx:definitionSource>
+      <xilinx:xpmLibraries>
+        <xilinx:xpmLibrary>XPM_CDC</xilinx:xpmLibrary>
+        <xilinx:xpmLibrary>XPM_FIFO</xilinx:xpmLibrary>
+        <xilinx:xpmLibrary>XPM_MEMORY</xilinx:xpmLibrary>
+      </xilinx:xpmLibraries>
+      <xilinx:vendorDisplayName>Real Digital, LLC</xilinx:vendorDisplayName>
+      <xilinx:vendorURL>https://www.realdigital.org</xilinx:vendorURL>
+      <xilinx:coreRevision>4</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2019-03-27T21:54:28Z</xilinx:coreCreationDateTime>
+      <xilinx:tags>
+        <xilinx:tag xilinx:name="nopcore"/>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@424881d5_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@208314d7_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@46bd9699_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@61d23a9a_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@316f319b_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@18679461_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@170f93c0_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7c132c3d_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@53e56c78_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@361665f5_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7e5c3c94_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@35cdbf12_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@59acb6a4_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@72be46a6_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4ebf730a_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@568ca352_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@aa124e6_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4ea86208_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3e1526d6_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3316d12f_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@21296a30_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@48f43a1_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@560f0d5c_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1c3dad3e_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1220ec39_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5819e169_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5d398272_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1fc69b01_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7c3915a_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7bd83c36_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1c723bb_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@78ec9628_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2f2cd0d8_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@f8cf853_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@54fc7b96_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@dd28c9e_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3d669bb6_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@63f491d8_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@567d4947_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@25408bcb_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6710a033_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3e9ee196_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5829cd3_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4d2a7ac3_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4222688d_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@55787de6_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@37913d8b_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1738d13d_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@62b89ef7_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@41a07494_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2b3b9d98_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4ad17102_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4c800dda_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7726ae1e_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2d20254d_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@28861f87_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7041823e_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@eb8008c_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@c1bd7be_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2657a265_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5fe3fd37_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@26bc3128_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@32e4d05c_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3f71907e_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5559b308_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1a55a2b6_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@615aa1a4_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@58887b8d_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@408968cf_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blank</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@612c51d0_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@395c40ce_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6f733f02_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4da69a24_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@175bd694_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@796bbc09_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1c33e897_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@15d6d86b_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@66c557e9_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1d6d993f_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@32eff35a_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5c4e4088_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4598f231_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@171a3e7a_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@489c6e51_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@62b60288_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@726ebcf3_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@533c742c_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4dbdbe95_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@82a6422_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4debc5dd_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@17ce8986_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@76b18fe7_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6a180e97_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@755e31d3_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@66e21321_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@213d1342_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7ab67457_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@29a92f1b_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3966d4e4_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@14b3208c_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@39a486fb_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@36cdff3e_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@438b0cd_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4020cba5_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@342fb095_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@34e3e01b_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5f326830_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3dc8f08_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2565c5d7_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1ffe5c94_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@758dedf3_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@27e828c_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@597dc200_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6f2991ce_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@64f23186_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5e0c7775_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@56454be9_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@22ef3b09_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6cbf3345_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2b57a61_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3e455338_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6162200e_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@103aa587_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5465ef7f_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@757963c3_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5a9a2a5b_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2c4f0867_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@584037a1_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@28ad02fc_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@43dddeff_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@61d28659_ARCHIVE_LOCATION">/home/tinghui/Blackboard/revD/blackboard/ip_repo/lsm9ds1_spi_bridge_1.0</xilinx:tag>
+      </xilinx:tags>
+    </xilinx:coreExtensions>
+    <xilinx:packagingInfo>
+      <xilinx:xilinxVersion>2018.3</xilinx:xilinxVersion>
+      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="70bd7f69"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="2cf442e2"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="7e0c67ff"/>
+      <xilinx:checksum xilinx:scope="parameters" xilinx:value="103b8f17"/>
+    </xilinx:packagingInfo>
+  </spirit:vendorExtensions>
+</spirit:component>
