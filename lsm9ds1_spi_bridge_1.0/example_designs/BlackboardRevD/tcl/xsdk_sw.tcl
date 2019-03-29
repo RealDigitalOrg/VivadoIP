@@ -5,7 +5,7 @@
 # Copyright (c) 2018-2019, RealDigital.org
 #
 # Description:
-#   Create SDK project for seven segment display example project.
+#   Create SDK project for lsm9ds1 example project.
 #
 # History:
 #   03/02/19: Initial release
@@ -96,7 +96,7 @@ set hwspec_file         $sdk_workspace/system_wrapper.hdf
 set bsp_name       standalone_bsp
 set bsp_path       $sdk_workspace/$bsp_name
 set mss_file       $bsp_path/system.mss
-set app_name       ssd_example
+set app_name       lsm9ds1_example
 
 proc get_processor {hdf} {
     hsi open_hw_design $hdf
