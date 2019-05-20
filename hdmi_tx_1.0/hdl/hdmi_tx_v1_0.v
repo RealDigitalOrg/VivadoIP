@@ -2,7 +2,7 @@
 // Module: hdmi_tx_v1_0
 // Author: Tinghui Wang
 //
-// Copyright @ 2017 RealDigital.org
+// Copyright @ 2017-2019 RealDigital.org
 //
 // Description:
 //   HDMI/DVI encoder module for Xilinx 7-series FPGA.
@@ -12,6 +12,9 @@
 //
 // History:
 //   11/12/17: Created
+//   02/01/19: Update to utilize vid_io bus interface in Vivado.
+//   02/05/19: Update to synchronize rst_i signal to pix_clk.
+//   02/06/19: Added asynchronous reset to rst_i signal.
 //
 // License: BSD 3-Clause
 //
@@ -68,7 +71,8 @@
 `timescale 1 ps / 1ps
 
 module hdmi_tx_v1_0 # (
-  parameter MODE = "HDMI",		// Encoder Mode: HDMI or DVI
+  parameter MODE = "DVI",	// Encoder Mode: HDMI or DVI
+  parameter C_DATA_WIDTH = 32,  // Data width of bus with RGB
   parameter C_RED_WIDTH = 8,	// Width of Red Channel
   parameter C_GREEN_WIDTH = 8,  // Width of Green Channel
   parameter C_BLUE_WIDTH = 8	// Width of Blue Channel
@@ -79,9 +83,7 @@ module hdmi_tx_v1_0 # (
     input pix_clk_locked,       // Pixel Locked signal
     input rst,                  // reset
     // fit to XSVI standard port
-    input [C_RED_WIDTH-1:0] red,        // Red Channel Video Data
-    input [C_GREEN_WIDTH-1:0] green,    // Green Channel Video Data
-    input [C_BLUE_WIDTH-1:0] blue,      // Blue Channel Video Data
+    input [C_DATA_WIDTH-1:0] pix_data,  // Width of RGB data bus
     input hsync,                        // Hsync Data
     input vsync,                        // Vsync Data
     input vde,                          // Video Data enable
@@ -98,13 +100,35 @@ module hdmi_tx_v1_0 # (
 );
 
 // Reset
-wire rst_i;
-assign rst_i = rst | ~pix_clk_locked;
+wire rst_i, rst_in;
+reg rst_q1, rst_q2;
+assign rst_in = rst | ~pix_clk_locked;
+assign rst_i = rst_q2;
+
+// Generate synchronous reset signal
+always @ (posedge pix_clk or posedge rst_in) begin
+  if (rst_in) begin
+    rst_q1 <= 1'b1;
+    rst_q2 <= 1'b1;
+  end else begin
+    rst_q1 <=#1 rst_in;
+    rst_q2 <=#1 rst_q1;
+  end
+end
 
 // Padding/Truncating RGB to 24-bit color depth
 wire    [7:0]   blue_din;         // Blue data in
 wire    [7:0]   green_din;        // Green data in
 wire    [7:0]   red_din;          // Red data in
+
+// RBG Breakout
+wire [C_RED_WIDTH-1:0] red;        // Red Channel Video Data
+wire [C_GREEN_WIDTH-1:0] green;    // Green Channel Video Data
+wire [C_BLUE_WIDTH-1:0] blue;      // Blue Channel Video Data
+assign red = pix_data[C_RED_WIDTH+C_GREEN_WIDTH+C_BLUE_WIDTH-1:C_GREEN_WIDTH+C_BLUE_WIDTH];
+assign green = pix_data[C_GREEN_WIDTH+C_BLUE_WIDTH-1:C_BLUE_WIDTH];
+assign blue = pix_data[C_BLUE_WIDTH-1:0];
+
 
 generate
 if (C_RED_WIDTH >= 8)

@@ -3,7 +3,7 @@
   <spirit:vendor>realdigital.org</spirit:vendor>
   <spirit:library>realdigital</spirit:library>
   <spirit:name>hdmi_tx</spirit:name>
-  <spirit:version>1.0</spirit:version>
+  <spirit:version>1.1</spirit:version>
   <spirit:busInterfaces>
     <spirit:busInterface>
       <spirit:name>rst</spirit:name>
@@ -93,6 +93,46 @@
         </spirit:portMap>
       </spirit:portMaps>
     </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>RGB</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="vid_io" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="vid_io_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ACTIVE_VIDEO</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>vde</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>VSYNC</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>vsync</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>DATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>pix_data</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>HSYNC</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>hsync</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+    </spirit:busInterface>
   </spirit:busInterfaces>
   <spirit:model>
     <spirit:views>
@@ -108,7 +148,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>70baa6ff</spirit:value>
+            <spirit:value>a176de12</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -124,7 +164,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>9b373604</spirit:value>
+            <spirit:value>a176de12</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -138,9 +178,15 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>615c14ad</spirit:value>
+            <spirit:value>6e355823</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_testbench</spirit:name>
+        <spirit:displayName>Test Bench</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:simulation.testbench</spirit:envIdentifier>
+        <spirit:modelName>hdmi_tx_tb</spirit:modelName>
       </spirit:view>
     </spirit:views>
     <spirit:ports>
@@ -194,14 +240,17 @@
               <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
         </spirit:wire>
       </spirit:port>
       <spirit:port>
-        <spirit:name>red</spirit:name>
+        <spirit:name>pix_data</spirit:name>
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_RED_WIDTH&apos;)) - 1)">7</spirit:left>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_DATA_WIDTH&apos;)) - 1)">31</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -211,40 +260,9 @@
               <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
-        </spirit:wire>
-      </spirit:port>
-      <spirit:port>
-        <spirit:name>green</spirit:name>
-        <spirit:wire>
-          <spirit:direction>in</spirit:direction>
-          <spirit:vector>
-            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_GREEN_WIDTH&apos;)) - 1)">7</spirit:left>
-            <spirit:right spirit:format="long">0</spirit:right>
-          </spirit:vector>
-          <spirit:wireTypeDefs>
-            <spirit:wireTypeDef>
-              <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
-              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
-            </spirit:wireTypeDef>
-          </spirit:wireTypeDefs>
-        </spirit:wire>
-      </spirit:port>
-      <spirit:port>
-        <spirit:name>blue</spirit:name>
-        <spirit:wire>
-          <spirit:direction>in</spirit:direction>
-          <spirit:vector>
-            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_BLUE_WIDTH&apos;)) - 1)">7</spirit:left>
-            <spirit:right spirit:format="long">0</spirit:right>
-          </spirit:vector>
-          <spirit:wireTypeDefs>
-            <spirit:wireTypeDef>
-              <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
-              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
-            </spirit:wireTypeDef>
-          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
         </spirit:wire>
       </spirit:port>
       <spirit:port>
@@ -302,7 +320,7 @@
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
           <spirit:driver>
-            <spirit:defaultValue spirit:format="long">0x0</spirit:defaultValue>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
           </spirit:driver>
         </spirit:wire>
         <spirit:vendorExtensions>
@@ -329,7 +347,7 @@
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
           <spirit:driver>
-            <spirit:defaultValue spirit:format="long">0x0</spirit:defaultValue>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
           </spirit:driver>
         </spirit:wire>
         <spirit:vendorExtensions>
@@ -356,7 +374,7 @@
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
           <spirit:driver>
-            <spirit:defaultValue spirit:format="long">0x0</spirit:defaultValue>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
           </spirit:driver>
         </spirit:wire>
         <spirit:vendorExtensions>
@@ -379,7 +397,7 @@
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
           <spirit:driver>
-            <spirit:defaultValue spirit:format="long">0b0</spirit:defaultValue>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
           </spirit:driver>
         </spirit:wire>
         <spirit:vendorExtensions>
@@ -472,11 +490,16 @@
         <spirit:displayName>C Blue Width</spirit:displayName>
         <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_BLUE_WIDTH">8</spirit:value>
       </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>C_DATA_WIDTH</spirit:name>
+        <spirit:displayName>C Data Width</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_DATA_WIDTH">32</spirit:value>
+      </spirit:modelParameter>
     </spirit:modelParameters>
   </spirit:model>
   <spirit:choices>
     <spirit:choice>
-      <spirit:name>choice_list_5698a4a8</spirit:name>
+      <spirit:name>choice_list_bf0cb0d2</spirit:name>
       <spirit:enumeration>HDMI</spirit:enumeration>
       <spirit:enumeration>DVI</spirit:enumeration>
     </spirit:choice>
@@ -499,7 +522,7 @@
       <spirit:file>
         <spirit:name>hdl/hdmi_tx_v1_0.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_1f438d57</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_23c3c815</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -520,29 +543,13 @@
         <spirit:name>hdl/hdmi_tx_v1_0.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
-      <spirit:file>
-        <spirit:name>sim/clk_wiz_0/clk_wiz_0.xci</spirit:name>
-        <spirit:userFileType>xci</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>sim/hdmi_tx_tb.v</spirit:name>
-        <spirit:fileType>verilogSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
-        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>sim/wrapper.v</spirit:name>
-        <spirit:fileType>verilogSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
-        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
-      </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
       <spirit:name>xilinx_xpgui_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>xgui/hdmi_tx_v1_0.tcl</spirit:name>
+        <spirit:name>xgui/hdmi_tx_v1_1.tcl</spirit:name>
         <spirit:fileType>tclSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_615c14ad</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_6e355823</spirit:userFileType>
         <spirit:userFileType>XGUI_VERSION_2</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
@@ -552,26 +559,31 @@
     <spirit:parameter>
       <spirit:name>MODE</spirit:name>
       <spirit:displayName>Mode</spirit:displayName>
-      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.MODE" spirit:choiceRef="choice_list_5698a4a8">DVI</spirit:value>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.MODE" spirit:choiceRef="choice_list_bf0cb0d2">DVI</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>C_RED_WIDTH</spirit:name>
       <spirit:displayName>Red Channel Data Width</spirit:displayName>
-      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.C_RED_WIDTH">8</spirit:value>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.C_RED_WIDTH" spirit:minimum="8" spirit:maximum="16" spirit:rangeType="long">8</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>C_GREEN_WIDTH</spirit:name>
       <spirit:displayName>Green Channel Data Width</spirit:displayName>
-      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.C_GREEN_WIDTH">8</spirit:value>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.C_GREEN_WIDTH" spirit:minimum="8" spirit:maximum="16" spirit:rangeType="long">8</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>C_BLUE_WIDTH</spirit:name>
       <spirit:displayName>Blue Channel Data Width</spirit:displayName>
-      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.C_BLUE_WIDTH">8</spirit:value>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.C_BLUE_WIDTH" spirit:minimum="8" spirit:maximum="16" spirit:rangeType="long">8</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>Component_Name</spirit:name>
       <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.Component_Name" spirit:order="1">hdmi_tx_v1_0_v1_0</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>C_DATA_WIDTH</spirit:name>
+      <spirit:displayName>RGB Data Width</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.C_DATA_WIDTH" spirit:minimum="24" spirit:maximum="64" spirit:rangeType="long">32</spirit:value>
     </spirit:parameter>
   </spirit:parameters>
   <spirit:vendorExtensions>
@@ -594,26 +606,29 @@
       <xilinx:definitionSource>package_project</xilinx:definitionSource>
       <xilinx:vendorDisplayName>Real Digital</xilinx:vendorDisplayName>
       <xilinx:vendorURL>https://www.realdigital.org</xilinx:vendorURL>
-      <xilinx:coreRevision>1</xilinx:coreRevision>
+      <xilinx:coreRevision>2</xilinx:coreRevision>
       <xilinx:upgrades>
         <xilinx:canUpgradeFrom>user.org:user:hdmi_tx_v1_0:1.0</xilinx:canUpgradeFrom>
+        <xilinx:canUpgradeFrom>realdigital.org:realdigital:hdmi_tx:1.0</xilinx:canUpgradeFrom>
       </xilinx:upgrades>
-      <xilinx:coreCreationDateTime>2017-11-19T00:16:08Z</xilinx:coreCreationDateTime>
+      <xilinx:coreCreationDateTime>2019-02-05T22:59:02Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="nopcore"/>
         <xilinx:tag xilinx:name="user.org:user:hdmi_tx_v1_0:1.0_ARCHIVE_LOCATION">/home/tinghui/Blackboard/hw/ip_repo/hdmi_tx_1.0</xilinx:tag>
         <xilinx:tag xilinx:name="realdigital.org:user:hdmi_tx_v1_0:1.0_ARCHIVE_LOCATION">/home/tinghui/Blackboard/hw/ip_repo/hdmi_tx_1.0</xilinx:tag>
         <xilinx:tag xilinx:name="realdigital.org:realdigital:hdmi_tx_v1_0:1.0_ARCHIVE_LOCATION">/home/tinghui/Blackboard/hw/ip_repo/hdmi_tx_1.0</xilinx:tag>
-        <xilinx:tag xilinx:name="realdigital.org:realdigital:hdmi_tx:1.0_ARCHIVE_LOCATION">/home/tinghui/Blackboard/hw/ip_repo/hdmi_tx_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="realdigital.org:realdigital:hdmi_tx:1.0_ARCHIVE_LOCATION">/home/rphoover/Xilinx/linux-blackboard/ip_repo/hdmi_tx_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="realdigital.org:realdigital:hdmi_tx:1.10_ARCHIVE_LOCATION">/home/rphoover/Xilinx/linux-blackboard/ip_repo/hdmi_tx_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="realdigital.org:realdigital:hdmi_tx:1.1_ARCHIVE_LOCATION">/home/rphoover/Xilinx/linux-blackboard/ip_repo/hdmi_tx_1.0</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
-      <xilinx:xilinxVersion>2017.3</xilinx:xilinxVersion>
-      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="1a134677"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="a55fea82"/>
-      <xilinx:checksum xilinx:scope="ports" xilinx:value="9620190f"/>
-      <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="a16d1870"/>
-      <xilinx:checksum xilinx:scope="parameters" xilinx:value="c69c7687"/>
+      <xilinx:xilinxVersion>2017.4.1</xilinx:xilinxVersion>
+      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="feb73a95"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="dddae316"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="4d18cfb3"/>
+      <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="45a33a73"/>
+      <xilinx:checksum xilinx:scope="parameters" xilinx:value="7ff2a3ca"/>
     </xilinx:packagingInfo>
   </spirit:vendorExtensions>
 </spirit:component>

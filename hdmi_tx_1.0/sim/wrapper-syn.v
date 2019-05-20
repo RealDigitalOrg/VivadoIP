@@ -2,14 +2,13 @@
 // Module: wrapper
 // Author: Tinghui Wang
 //
-// Copyright @ 2017-2019 RealDigital.org
+// Copyright @ 2017 RealDigital.org
 //
 // Description:
 //   Solid color screen for HDMI testing at 720p60 resolution.
 //
 // History:
 //   11/12/17: Created
-//   02/01/19: Updated for simulation and to utilize vid_io interface.
 //
 // License: BSD 3-Clause
 //
@@ -46,6 +45,12 @@ module wrapper(
     input clk,
     input rst,
     input [7:0] sw,
+    // VGA output ports
+    output vga_hsync,
+    output vga_vsync,
+    output [3:0] vga_red,
+    output [3:0] vga_green,
+    output [3:0] vga_blue,
     // hdmi output ports
     output  hdmi_tx_hpd,
     output TMDS_CLK_P,
@@ -54,10 +59,10 @@ module wrapper(
     output  [2:0] TMDS_DATA_N
 );
     
-    reg  pix_clk = 0;
-    reg  pix_clkx5 = 0;
+    wire pix_clk;
+    wire pix_clkx5;
     
-    reg  locked;
+    wire locked;
     wire pix_rst;
         
     wire hsync;
@@ -67,19 +72,18 @@ module wrapper(
     wire [7:0] green;
     wire [7:0] blue;
     wire [23:0] data;
-   
-    // Simulate Clock Wizard 
-    always @ *
-        #6.735 pix_clk <= ~pix_clk;
-
-    always @ *
-        #1.347 pix_clkx5 <= ~pix_clkx5;
-    initial
-    begin
-      locked = 0;
-      #7000
-      locked = 1;
-    end
+    
+    clk_wiz_0 clk_wiz_inst
+    (
+    // Clock out ports  
+    .clk(pix_clk),
+    .clk_x5(pix_clkx5),
+    // Status and control signals               
+    .reset(rst), 
+    .locked(locked),
+   // Clock in ports
+    .clk_in(clk)
+    );
     
     assign pix_rst = rst | ~locked;
     assign data[23:16] = red;
@@ -154,7 +158,17 @@ module wrapper(
     
     assign red = (vde == 1'b1) ? {sw[7:5], 5'h1F} : 8'h00;
     assign green = (vde == 1'b1) ? {sw[4:2], 5'h1F} : 8'h00;
-    assign blue = (vde == 1'b1) ? {sw[1:0], 6'h3F} : 8'h00;    
+    assign blue = (vde == 1'b1) ? {sw[1:0], 6'h3F} : 8'h00;
+    
+    srldelay # (
+        .WIDTH(14),
+        .TAPS(4'd1)
+    ) vga_srldelay (
+        .data_i({red[7:4], green[7:4], blue[7:4], hsync, vsync}),
+        .data_o({vga_red, vga_green, vga_blue, vga_hsync, vga_vsync}),
+        .clk(pix_clk)
+    );
+    
     assign hdmi_tx_hpd = 1'b1;
     
 endmodule
