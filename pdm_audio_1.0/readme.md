@@ -91,25 +91,20 @@ Data in both speaker buffers and microphone buffer are 32-bit aligned, where onl
 
 ## Example Project
 
-### Blackboard Rev. A
+### BlackBoard Rev. D
 
-To generate example project targeting Blackboard Rev. A in Vivado 2017.3, browse to the folder where you want the project to be created and run
+To generate example project for PDM Audio IP core targeting BlackBoard rev.D, you can source the `create_project.tcl` under `example_designs/BlackboardRevD/tcl/` in Vivado.
 
 ```bash
-vivado -mode tcl -source ../VivadoIP/pdm_audio_1.0/example_designs/blackboardRevA/hw/create_project_2017_3.tcl -tclargs --origin_dir ../VivadoIP/pdm_audio_1.0/example_designs/blackboardRevA/hw/
+> vivado -mode batch -source tcl/create_project.tcl -tclargs --project_dir ./pdm_audio_example --project_name example
 ```
 
-or open Vivado, in tcl command window, browse to the folder you want to create your project and run
+To generate the example XSDK project, you can source the `xsdk_sw.tcl` to create the xsdk project.
 
-```tcl
-source ../VivadoIP/pdm_audio_1.0/example_designs/blackboardRevA/hw/create_project_2017_3.tcl -tclargs --origin_dir ../VivadoIP/pdm_audio_1.0/example_designs/blackboardRevA/hw/
+```bash
+> xsdk -batch -source tcl/xsdk_sw.tcl --project_dir ./pdm_audio_example --project_name example
 ```
-
-Change the "../VivadoIP" to the location of VivadoIP directory on your system.
-
-After bitstream is generated, export the hardware to SDK. Create an empty application and add "main.c" file.
 
 ## To-do List
 
 - PL330 DMA Support for input/output channels.
-- Interrupt generation
