@@ -1,7 +1,16 @@
 ###############################################################################
+# File: blackboard_revD_video.xdc 
+# Author: Tinghui Wang
 #
-# Copyright (c) 2018, RealDigital
-# All rights reserved.
+# Copyright (c) 2018-2019, RealDigital.org
+#
+# Description:
+#   I/O constraints file for HDMI example project targeting Blackboard rev. D.
+# 
+# History:
+#   03/02/19: Initial release
+#  
+# License: BSD 3-Clause
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -28,22 +37,6 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 # POSSIBILITY OF SUCH DAMAGE.
-#
-###############################################################################
-
-###############################################################################
-# @file blackboard_video.xdc 
-#
-# Constraints file for hdmi_tx_1.0 reference design on Blackboard rev. D.
-#
-# <pre>
-# MODIFICATION HISTORY:
-# 
-# Ver   Who  Date       Changes
-# ----- ---- ---------- -------------------------------------------------------
-# 1.00a TW   10/13/2018 initial release
-#
-# </pre>
 #
 ###############################################################################
 
@@ -79,3 +72,7 @@ set_property IOSTANDARD TMDS_33 [get_ports {TMDS*}]
 
 set_property PACKAGE_PIN P16 [get_ports hdmi_tx_hpd]
 set_property IOSTANDARD LVCMOS33 [get_ports hdmi_tx_hpd]
+
+# Bitstream Compression
+set_property BITSTREAM.GENERAL.COMPRESS true [current_design]
+set_property BITSTREAM.CONFIG.UNUSEDPIN PULLUP [current_design]

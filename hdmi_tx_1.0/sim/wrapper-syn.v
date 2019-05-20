@@ -95,7 +95,7 @@ module wrapper(
         .C_RED_WIDTH(8),
         .C_GREEN_WIDTH(8),
         .C_BLUE_WIDTH(8),
-        .MODE("HDMI")
+        .MODE("DVI")
     ) hdmi_tx_inst (
         .pix_clk(pix_clk),
         .pix_clkx5(pix_clkx5),

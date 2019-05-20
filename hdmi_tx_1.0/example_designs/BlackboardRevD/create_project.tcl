@@ -1,7 +1,16 @@
 ###############################################################################
+# File: create_project.tcl
+# Author: Tinghui Wang
 #
-# Copyright (c) 2018, RealDigital
-# All rights reserved.
+# Copyright (c) 2018-2019, RealDigital.org
+#
+# Description:
+#   Create example design of HDMI module targeting Blackboard rev. D. 
+#
+# History:
+#   03/02/19: Initial release
+#  
+# License: BSD 3-Clause
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -31,59 +40,66 @@
 #
 ###############################################################################
 
-###############################################################################
-# @file project.tcl 
-#
-# Vivado tcl script to generate project
-#
-# <pre>
-# MODIFICATION HISTORY:
-# 
-# Ver   Who  Date       Changes
-# ----- ---- ---------- -------------------------------------------------------
-# 1.00a TW   10/13/2018 initial release
-#
-# </pre>
-#
-###############################################################################
-
 namespace eval _tcl {
-proc get_script_folder {} {
-   set script_path [file normalize [info script]]
-   set script_folder [file dirname $script_path]
-   return $script_folder
-}
+    proc get_script_folder {} {
+	    set script_path [file normalize [info script]]
+	    set script_folder [file dirname $script_path]
+        return $script_folder
+    }
 }
 variable script_folder
 set script_folder [_tcl::get_script_folder]
 
-################################################################
-# Check if script is running in correct Vivado version.
-################################################################
-set scripts_vivado_version 2018.2
-set current_vivado_version [version -short]
+variable script_file
+set script_file "create_project.tcl"
 
-if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
-   puts ""
-   catch {common::send_msg_id "BD_TCL-109" "ERROR" "This script was generated using Vivado <$scripts_vivado_version> and is being run in <$current_vivado_version> of Vivado. Please run the script in Vivado <$scripts_vivado_version> then open the design in Vivado <$current_vivado_version>. Upgrade the design by running \"Tools => Report => Report IP Status...\", then run write_bd_tcl to create an updated script."}
-
-   return 1
-}
-
-################################################################
-# START
-################################################################
-
-set origin_dir          "."
+# Default path
+set bd_name             {system}
 set device              {xc7z007sclg400-1}
-set project_name        {hdmi_test}
+set project_name        {example}
+set project_dir         {./}
 
-# Create project and set project directory
-set list_projs [get_projects -quiet]
-if { $list_projs eq "" } {
-    create_project $project_name ./$project_name -part $device
+# Help information for this script
+proc help {} {
+  global script_file
+  puts "\nDescription:"
+  puts "Create Vivado example project for HDMI TX IP targeting"
+  puts "Blackboard rev. D."
+  puts "Syntax:"
+  puts "$script_file -tclargs \[--project_name <name>\]"
+  puts "$script_file -tclargs \[--project_dir <path\]"
+  puts "$script_file -tclargs \[--help\]"
+  puts "Usage:"
+  puts "Name                   Description"
+  puts "------------------------------------------------------------------"
+  puts "\[--project_name <name>\] Create project with the specified name."
+  puts "                       Default name is \"example\"."
+  puts "\[--project_dir <path>\]  Determine the project paths wrt to \".\"."
+  puts "                       Default project path value is \".\"."
+  puts "\[--help\]               Print help information for this script"
+  puts "------------------------------------------------------------------\n" 
+  exit 0
 }
-set proj_dir [get_property directory [current_project]]
+
+if { $::argc > 0 } {
+  for {set i 0} {$i < [llength $::argc]} {incr i} {
+    set option [string trim [lindex $::argv $i]]
+    switch -regexp -- $option {
+      "--project_dir"   { incr i; set project_dir [lindex $::argv $i] }
+      "--project_name" { incr i; set project_name [lindex $::argv $i] }
+      "--help"         { help }
+      default {
+        if { [regexp {^-} $option] } {
+          puts "ERROR: Unknown option '$option' specified, please type '$script_file -tclargs --help' for usage info.\n"
+          return 1
+        }
+      }
+    }
+  }
+}
+
+# Create project
+create_project $project_name $project_dir -part $device
 
 # Create sources set and add files
 if {[string equal [get_filesets -quiet sources_1] ""]} {
@@ -97,7 +113,7 @@ set files [list \
  "[file normalize "$script_folder/../../hdl/hdmi_tx_v1_0.v"]"\
  "[file normalize "$script_folder/../../hdl/serdes_10_to_1.v"]"\
  "[file normalize "$script_folder/../../hdl/srldelay.v"]"\
- "[file normalize "$script_folder/../../sim/wrapper.v"]"\
+ "[file normalize "$script_folder/../../sim/wrapper-syn-revd.v"]"\
 ]
 add_files -norecurse -fileset $src_set $files
 set_property -name "top" -value "wrapper" -objects $src_set
@@ -107,7 +123,7 @@ if {[string equal [get_filesets -quiet constrs_1] ""]} {
   create_fileset -constrset constrs_1
 }
 set con_set [get_filesets constrs_1]
-set file "[file normalize "$script_folder/../constraints/blackboard_video.xdc"]"
+set file "[file normalize "$script_folder/blackboard_revD_video.xdc"]"
 set file_added [add_files -norecurse -fileset $con_set $file]
 
 # Create simulation set and add files
