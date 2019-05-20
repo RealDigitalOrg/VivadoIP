@@ -1,7 +1,16 @@
 ###############################################################################
+# File: BlackBoard_ps_presets.tcl 
+# Author: Tinghui Wang
 #
-# Copyright (c) 2018, RealDigital
-# All rights reserved.
+# Copyright (c) 2018-2019, RealDigital.org
+#
+# Description:
+#   Default configuration for Zynq 7 processing system for Blackboard rev. D.
+# 
+# History:
+#   10/13/18: Initial release
+#  
+# License: BSD 3-Clause
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -28,22 +37,6 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 # POSSIBILITY OF SUCH DAMAGE.
-#
-###############################################################################
-
-###############################################################################
-# @file BlackBoard_ps_presets.tcl
-#
-# Default configuration for Zynq 7 processing system for Blackboard rev.D.
-#
-# <pre>
-# MODIFICATION HISTORY:
-# 
-# Ver   Who  Date       Changes
-# ----- ---- ---------- -------------------------------------------------------
-# 1.00a TW   10/13/2018 initial release
-#
-# </pre>
 #
 ###############################################################################
 

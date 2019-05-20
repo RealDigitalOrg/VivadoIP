@@ -1,7 +1,17 @@
 ###############################################################################
+# File: system.xdc 
+# Author: Tinghui Wang
 #
-# Copyright (c) 2018, RealDigital
-# All rights reserved.
+# Copyright (c) 2018-2019, RealDigital.org
+#
+# Description:
+#   I/O constraints file for PDM Audio IP Core example project targeting
+#   BlackBoard rev. D.
+# 
+# History:
+#   03/02/19: Initial release
+#  
+# License: BSD 3-Clause
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -31,22 +41,6 @@
 #
 ###############################################################################
 
-###############################################################################
-# @file blackboard_pdm_audio.xdc 
-#
-# Constraints file for pdm_audio_1.0 reference design on Blackboard rev. D.
-#
-# <pre>
-# MODIFICATION HISTORY:
-# 
-# Ver   Who  Date       Changes
-# ----- ---- ---------- -------------------------------------------------------
-# 1.00a TW   10/26/2018 initial release
-#
-# </pre>
-#
-###############################################################################
-
 # speaker pin
 set_property PACKAGE_PIN G18 [get_ports pdm_speaker_l]
 set_property IOSTANDARD LVCMOS33 [get_ports pdm_speaker_l]
@@ -61,4 +55,8 @@ set_property IOSTANDARD LVCMOS33 [get_ports pdm_mic]
 
 set_property PACKAGE_PIN N15 [get_ports pdm_mic_mclk]
 set_property IOSTANDARD LVCMOS33 [get_ports pdm_mic_mclk]
+
+# Bitstream Compression
+set_property BITSTREAM.GENERAL.COMPRESS true [current_design]
+set_property BITSTREAM.CONFIG.UNUSEDPIN PULLUP [current_design]
 

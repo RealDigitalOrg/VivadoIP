@@ -1,7 +1,16 @@
 ###############################################################################
+# File: create_project.tcl
+# Author: Tinghui Wang
 #
-# Copyright (c) 2018, RealDigital
-# All rights reserved.
+# Copyright (c) 2018-2019, RealDigital.org
+#
+# Description:
+#   Create example design of PDM Audio IP Core targeting Blackboard Rev. D.
+#
+# History:
+#   03/02/19: Initial release
+#  
+# License: BSD 3-Clause
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -31,70 +40,72 @@
 #
 ###############################################################################
 
-###############################################################################
-# @file base.tcl
-#
-# Vivado tcl script to generate basic board design
-#
-# <pre>
-# MODIFICATION HISTORY:
-# 
-# Ver   Who  Date       Changes
-# ----- ---- ---------- -------------------------------------------------------
-# 1.00a TW   10/13/2018 initial release
-#
-# </pre>
-#
-###############################################################################
-
 namespace eval _tcl {
-proc get_script_folder {} {
-   set script_path [file normalize [info script]]
-   set script_folder [file dirname $script_path]
-   return $script_folder
-}
+    proc get_script_folder {} {
+	    set script_path [file normalize [info script]]
+	    set script_folder [file dirname $script_path]
+        return $script_folder
+    }
 }
 variable script_folder
 set script_folder [_tcl::get_script_folder]
 
-################################################################
-# Check if script is running in correct Vivado version.
-################################################################
-set scripts_vivado_version 2018.2
-set current_vivado_version [version -short]
+variable script_file
+set script_file "create_project.tcl"
 
-if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
-   puts ""
-   catch {common::send_msg_id "BD_TCL-109" "ERROR" "This script was generated using Vivado <$scripts_vivado_version> and is being run in <$current_vivado_version> of Vivado. Please run the script in Vivado <$scripts_vivado_version> then open the design in Vivado <$current_vivado_version>. Upgrade the design by running \"Tools => Report => Report IP Status...\", then run write_bd_tcl to create an updated script."}
-
-   return 1
-}
-
-################################################################
-# START
-################################################################
-
-set ip_repo_path        {$script_folder/../../../}
+# Default path
+set ip_repo_path        {$script_folder/../../../../}
 set bd_name             {system}
 set device              {xc7z007sclg400-1}
-set project_name        {pdm_audio_proj}
+set project_name        {example}
+set project_dir         {./}
 
-# Create project
-set list_projs [get_projects -quiet]
-if { $list_projs eq "" } {
-    create_project $project_name ./$project_name -part $device
+# Help information for this script
+proc help {} {
+  global script_file
+  puts "\nDescription:"
+  puts "Create Vivado example project for seven segment display IP targeting"
+  puts "Blackboard rev. D."
+  puts "Syntax:"
+  puts "$script_file -tclargs \[--project_name <name>\]"
+  puts "$script_file -tclargs \[--project_dir <path\]"
+  puts "$script_file -tclargs \[--help\]"
+  puts "Usage:"
+  puts "Name                   Description"
+  puts "------------------------------------------------------------------"
+  puts "\[--project_name <name>\] Create project with the specified name."
+  puts "                       Default name is \"example\"."
+  puts "\[--project_dir <path>\]  Determine the project paths wrt to \".\"."
+  puts "                       Default project path value is \".\"."
+  puts "\[--help\]               Print help information for this script"
+  puts "------------------------------------------------------------------\n" 
+  exit 0
 }
 
-# Set IP Repository
+if { $::argc > 0 } {
+  for {set i 0} {$i < [llength $::argc]} {incr i} {
+    set option [string trim [lindex $::argv $i]]
+    switch -regexp -- $option {
+      "--project_dir"   { incr i; set project_dir [lindex $::argv $i] }
+      "--project_name" { incr i; set project_name [lindex $::argv $i] }
+      "--help"         { help }
+      default {
+        if { [regexp {^-} $option] } {
+          puts "ERROR: Unknown option '$option' specified, please type '$script_file -tclargs --help' for usage info.\n"
+          return 1
+        }
+      }
+    }
+  }
+}
+
+# Create project
+create_project $project_name $project_dir -part $device
 set_property ip_repo_paths ${ip_repo_path} [current_fileset]
 update_ip_catalog -rebuild
 
-# Change design name
-variable design_name
-set design_name "system"
-
 # Create block design
-set current_bd [create_bd_design $design_name]
+set current_bd [create_bd_design $bd_name]
 set parentCell [get_bd_cells /]
 
 proc apply_ps_presets { cell presetFile } {
@@ -112,10 +123,10 @@ proc apply_ps_presets { cell presetFile } {
 }
 
 proc create_ps { parentCell cellName } {
-	upvar 1 script_folder script_folder
+    global script_folder
     # Add Zynq processing system
     set ps_cell [ create_bd_cell -type ip -vlnv xilinx.com:ip:processing_system7 $cellName ]
-    apply_ps_presets $ps_cell ${script_folder}/blackboard_ps_presets.tcl
+    apply_ps_presets $ps_cell $script_folder/BlackBoard_ps_presets.tcl
     apply_bd_automation -rule xilinx.com:bd_rule:processing_system7 -config {make_external "FIXED_IO, DDR" Master "Disable" Slave "Disable" } $ps_cell 
 }
 
@@ -147,12 +158,15 @@ connect_bd_net -net xlconcat_0_dout [get_bd_pins intr_concat/dout] [get_bd_pins 
 
 # Save block design
 save_bd_design
+
+# Save block design
+save_bd_design
 set bd_filename [get_property FILE_NAME [current_bd_design]]
 
 # Close block design
 close_bd_design $current_bd
 
-# Set synthesize option to global 
+# Disable OOC
 set_property synth_checkpoint_mode None [get_files $bd_filename]
 
 # Create HDL wrapper
@@ -169,9 +183,33 @@ if {[string equal [get_filesets -quiet constrs_1] ""]} {
     create_fileset -constrset constrs_1
 }
 set obj [get_filesets constrs_1]
-set files [list \
-	"[file normalize "constraints/system.xdc"]" \
-	"[file normalize "constraints/blackboard_pdm_audio.xdc"]" \
-]
-set file_imported [import_files -fileset constrs_1 $files]
+set file "[file normalize "$script_folder/system.xdc"]"
+set file_imported [import_files -fileset constrs_1 [list $file]]
+
+puts ""
+puts "############################################"
+puts "# Implementation Starts"
+puts "############################################"
+puts ""
+
+# Launch implementation and bitstream generation
+launch_runs impl_1 -to_step write_bitstream -jobs 4
+wait_on_run impl_1
+
+puts ""
+puts "############################################"
+puts "# Implementation Done"
+puts "############################################"
+puts ""
+
+# Export locally to SDK
+puts ""
+puts "############################################"
+puts "# Export to SDK locally"
+puts "############################################"
+puts ""
+set sdk_workspace $project_dir/$project_name.sdk
+file mkdir $sdk_workspace
+set hw_spec_file $sdk_workspace/system_wrapper.hdf
+file copy $project_dir/$project_name.runs/impl_1/system_wrapper.sysdef $hw_spec_file
 

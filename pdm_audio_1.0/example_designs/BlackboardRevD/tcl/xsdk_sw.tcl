@@ -1,7 +1,16 @@
 ###############################################################################
+# File: xsdk_sw.tcl
+# Author: Tinghui Wang
 #
-# Copyright (c) 2018, RealDigital
-# All rights reserved.
+# Copyright (c) 2018-2019, RealDigital.org
+#
+# Description:
+#   Create SDK project for PDM Audio IP example project.
+#
+# History:
+#   03/02/19: Initial release
+#  
+# License: BSD 3-Clause
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -31,22 +40,6 @@
 #
 ###############################################################################
 
-###############################################################################
-# @file xsdk_sw.tcl
-#
-# XSDK batch mode script for software project generation and compilation. 
-#
-# <pre>
-# MODIFICATION HISTORY:
-# 
-# Ver   Who  Date       Changes
-# ----- ---- ---------- -------------------------------------------------------
-# 1.00a TW   10/13/2018 initial release
-#
-# </pre>
-#
-###############################################################################
-
 namespace eval _tcl {
 proc get_script_folder {} {
    set script_path [file normalize [info script]]
@@ -56,15 +49,55 @@ proc get_script_folder {} {
 }
 variable script_folder
 set script_folder [_tcl::get_script_folder]
+set script_file "xsdk_sw.tcl"
 
-set project_name        {pdm_audio_proj}
-set sdk_workspace       ./$project_name/$project_name.sdk
+set project_name        {example}
+set project_dir         {./}
+
+proc help {} {
+  global script_file
+  puts "\nDescription:"
+  puts "Create SDK project for seven segment display IP targeting Blackboard rev. D."
+  puts "Syntax:"
+  puts "$script_file -tclargs \[--project_name <name>\]"
+  puts "$script_file -tclargs \[--project_dir <path\]"
+  puts "$script_file -tclargs \[--help\]"
+  puts "Usage:"
+  puts "Name                   Description"
+  puts "------------------------------------------------------------------"
+  puts "\[--project_name <name>\] Create project with the specified name."
+  puts "                       Default name is \"example\"."
+  puts "\[--project_dir <path>\]  Determine the project paths wrt to \".\"."
+  puts "                       Default project path value is \".\"."
+  puts "\[--help\]               Print help information for this script"
+  puts "------------------------------------------------------------------\n" 
+  exit 0
+}
+
+if { $::argc > 0 } {
+  for {set i 0} {$i < [llength $::argc]} {incr i} {
+    set option [string trim [lindex $::argv $i]]
+    switch -regexp -- $option {
+      "--project_dir"   { incr i; set project_dir [lindex $::argv $i] }
+      "--project_name" { incr i; set project_name [lindex $::argv $i] }
+      "--help"         { help }
+      default {
+        if { [regexp {^-} $option] } {
+          puts "ERROR: Unknown option '$option' specified, please type '$script_file -tclargs --help' for usage info.\n"
+          return 1
+        }
+      }
+    }
+  }
+}
+
+set sdk_workspace       ./$project_dir/$project_name.sdk
 set hwspec_file         $sdk_workspace/system_wrapper.hdf
 
 set bsp_name       standalone_bsp
 set bsp_path       $sdk_workspace/$bsp_name
 set mss_file       $bsp_path/system.mss
-set app_name       audio_test
+set app_name       pdm_audio_example
 
 proc get_processor {hdf} {
     hsi open_hw_design $hdf
@@ -84,12 +117,12 @@ hsi add_library xilffs
 hsi set_property CONFIG.stdin ps7_uart_1 [hsi get_os]
 hsi set_property CONFIG.stdout ps7_uart_1 [hsi get_os]
 hsi generate_bsp -sw_mss $mss_file -dir $bsp_path
-sdk createapp -name zynq_fsbl -proc $proc_name -hwproject hw -bsp $bsp_name -os standalone -app {Zynq FSBL}
-sdk createapp -name audio_test -proc $proc_name -hwproject hw -bsp $bsp_name -os standalone -app {Empty Application}
-sdk configapp -app audio_test -add libraries {m}
+sdk createapp -name $app_name -proc $proc_name -hwproject hw -bsp $bsp_name -os standalone -app {Empty Application}
+sdk configapp -app $app_name -add libraries {m}
 
-foreach {src_file} [glob "$script_folder/../src/*"] {
-	file copy $src_file $sdk_workspace/audio_test/src/
+foreach {src_file} [glob "$script_folder/../sw/*"] {
+	file copy $src_file $sdk_workspace/$app_name/src/
 }
 
 sdk build_project
+
