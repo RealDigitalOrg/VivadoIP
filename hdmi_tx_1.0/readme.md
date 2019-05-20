@@ -35,12 +35,6 @@ To generate example project targeting BlackBoard rev.A, you can source the `crea
 > vivado -mode batch -source tcl/create_project.tcl -tclargs --project_dir ./hdmi_example --project_name example
 ```
 
-To generate the example XSDK project, you can source the `xsdk_sw.tcl` to create the xsdk project.
-
-```bash
-> xsdk -batch -source tcl/xsdk_sw.tcl --project_dir ./hdmi_example --project_name example
-```
-
 The command arguments `--project_dir` and `--project_name` are optional.
 
 ### BlackBoard Rev. D
@@ -49,12 +43,6 @@ To generate example project targeting BlackBoard rev.D, you can source the `crea
 
 ```bash
 > vivado -mode batch -source tcl/create_project.tcl -tclargs --project_dir ./hdmi_example --project_name example
-```
-
-To generate the example XSDK project, you can source the `xsdk_sw.tcl` to create the xsdk project.
-
-```bash
-> xsdk -batch -source tcl/xsdk_sw.tcl --project_dir ./hdmi_example --project_name example
 ```
 
 The command arguments `--project_dir` and `--project_name` are optional.
